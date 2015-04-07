@@ -16,26 +16,44 @@ final MasterPlank MASTER = new MasterPlank();
  */
 class Plank {
 
+  /**
+   * Logs a verbose message
+   */
   static void v(String message, {Error error}) {
     MASTER.v(message, error: error);
   }
 
+  /**
+   * Logs a debug message
+   */
   static void d(String message, {Error error}) {
     MASTER.d(message, error: error);
   }
 
+  /**
+   * Logs an info message
+   */
   static void i(String message, {Error error}) {
     MASTER.i(message, error: error);
   }
 
+  /**
+   * Logs a warning message
+   */
   static void w(String message, {Error error}) {
     MASTER.w(message, error: error);
   }
 
+  /**
+   * Logs an error message
+   */
   static void e(String message, {Error error}) {
     MASTER.e(message, error: error);
   }
 
+  /**
+   * Adds a tag to be used on the next log calls
+   */
   static PlankLogger tag(String tag) {
     for (int index = 0, size = TAGGED_LOGGERS.length; index < size; index++) {
       (LOGGERS[TAGGED_LOGGERS[index]] as TaggedLogger).tag(tag);
@@ -107,35 +125,35 @@ abstract class TaggedLogger extends PlankLogger {
 class MasterPlank extends PlankLogger {
   @override
   void d(String message, {Error error}) {
-    for(PlankLogger t in LOGGERS) {
+    for (PlankLogger t in LOGGERS) {
       t.d(message, error: error);
     }
   }
 
   @override
   void e(String message, {Error error}) {
-    for(PlankLogger t in LOGGERS) {
+    for (PlankLogger t in LOGGERS) {
       t.e(message, error: error);
     }
   }
 
   @override
   void i(String message, {Error error}) {
-    for(PlankLogger t in LOGGERS) {
+    for (PlankLogger t in LOGGERS) {
       t.i(message, error: error);
     }
   }
 
   @override
   void v(String message, {Error error}) {
-    for(PlankLogger t in LOGGERS) {
+    for (PlankLogger t in LOGGERS) {
       t.v(message, error: error);
     }
   }
 
   @override
   void w(String message, {Error error}) {
-    for(PlankLogger t in LOGGERS) {
+    for (PlankLogger t in LOGGERS) {
       t.w(message, error: error);
     }
   }
