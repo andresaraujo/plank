@@ -6,3 +6,4 @@
 library plank;
 
 export 'src/plank_base.dart';
+export 'src/loggers.dart';

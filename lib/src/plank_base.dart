@@ -19,36 +19,36 @@ class Plank {
   /**
    * Logs a verbose message
    */
-  static void v(String message, {Error error}) {
-    MASTER.v(message, error: error);
+  static void v(String message, [Object error, StackTrace stackTrace]) {
+    MASTER.v(message, error, stackTrace);
   }
 
   /**
    * Logs a debug message
    */
-  static void d(String message, {Error error}) {
-    MASTER.d(message, error: error);
+  static void d(String message, [Object error, StackTrace stackTrace]) {
+    MASTER.d(message, error, stackTrace);
   }
 
   /**
    * Logs an info message
    */
-  static void i(String message, {Error error}) {
-    MASTER.i(message, error: error);
+  static void i(String message, [Object error, StackTrace stackTrace]) {
+    MASTER.i(message, error, stackTrace);
   }
 
   /**
    * Logs a warning message
    */
-  static void w(String message, {Error error}) {
-    MASTER.w(message, error: error);
+  static void w(String message, [Object error, StackTrace stackTrace]) {
+    MASTER.w(message, error, stackTrace);
   }
 
   /**
    * Logs an error message
    */
-  static void e(String message, {Error error}) {
-    MASTER.e(message, error: error);
+  static void e(String message, [Object error, StackTrace stackTrace]) {
+    MASTER.e(message, error, stackTrace);
   }
 
   /**
@@ -107,15 +107,15 @@ class Plank {
 
 abstract class PlankLogger {
 
-  void v(String message, {Error error});
+  void v(String message, [Object error, StackTrace stackTrace]);
 
-  void d(String message, {Error error});
+  void d(String message, [Object error, StackTrace stackTrace]);
 
-  void i(String message, {Error error});
+  void i(String message, [Object error, StackTrace stackTrace]);
 
-  void w(String message, {Error error});
+  void w(String message, [Object error, StackTrace stackTrace]);
 
-  void e(String message, {Error error});
+  void e(String message, [Object error, StackTrace stackTrace]);
 }
 
 abstract class TaggedLogger extends PlankLogger {
@@ -124,75 +124,37 @@ abstract class TaggedLogger extends PlankLogger {
 
 class MasterPlank extends PlankLogger {
   @override
-  void d(String message, {Error error}) {
+  void d(String message, [Object error, StackTrace stackTrace]) {
     for (PlankLogger t in LOGGERS) {
-      t.d(message, error: error);
+      t.d(message, error, stackTrace);
     }
   }
 
   @override
-  void e(String message, {Error error}) {
+  void e(String message, [Object error, StackTrace stackTrace]) {
     for (PlankLogger t in LOGGERS) {
-      t.e(message, error: error);
+      t.e(message, error, stackTrace);
     }
   }
 
   @override
-  void i(String message, {Error error}) {
+  void i(String message, [Object error, StackTrace stackTrace]) {
     for (PlankLogger t in LOGGERS) {
-      t.i(message, error: error);
+      t.i(message, error, stackTrace);
     }
   }
 
   @override
-  void v(String message, {Error error}) {
+  void v(String message, [Object error, StackTrace stackTrace]) {
     for (PlankLogger t in LOGGERS) {
-      t.v(message, error: error);
+      t.v(message, error, stackTrace);
     }
   }
 
   @override
-  void w(String message, {Error error}) {
+  void w(String message, [Object error, StackTrace stackTrace]) {
     for (PlankLogger t in LOGGERS) {
-      t.w(message, error: error);
+      t.w(message, error, stackTrace);
     }
-  }
-}
-
-class DummyLogger extends TaggedLogger {
-  String _tag = "DummyLogger";
-
-  @override
-  void d(String message, {Error error}) {
-    log(message, error: error);
-  }
-
-  @override
-  void e(String message, {Error error}) {
-    log(message, error: error);
-  }
-
-  @override
-  void i(String message, {Error error}) {
-    log(message, error: error);
-  }
-
-  @override
-  void tag(String tag) {
-    _tag = tag;
-  }
-
-  @override
-  void v(String message, {Error error}) {
-    log(message, error: error);
-  }
-
-  @override
-  void w(String message, {Error error}) {
-    log(message, error: error);
-  }
-
-  log(String message, {Error error}) {
-    print("${_tag} : $message");
   }
 }

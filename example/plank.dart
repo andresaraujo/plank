@@ -8,6 +8,8 @@ import 'package:plank/plank.dart';
 
 main() {
   Plank.install(new DummyLogger());
+  Plank.install(new SimpleLogger());
   Plank.tag("test tag");
   Plank.i("test");
+  Plank.e("some weird error here");
 }

@@ -5,7 +5,7 @@ version: 0.0.1
 author: Andres Araujo a.araujo.azua@gmail.com
 #homepage: https://www.example.com
 
-#dependencies:
-#  lib_name: any
+dependencies:
+  logging: any
 dev_dependencies:
   unittest: any
