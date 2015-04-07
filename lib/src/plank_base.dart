@@ -3,6 +3,8 @@
 
 library plank.base;
 
+import 'package:logging/logging.dart' show LogRecord, Logger, Level;
+
 final List<PlankLogger> LOGGERS = [];
 final List<int> TAGGED_LOGGERS = [];
 final MasterPlank MASTER = new MasterPlank();
@@ -54,11 +56,10 @@ class Plank {
   /**
    * Adds a tag to be used on the next log calls
    */
-  static PlankLogger tag(String tag) {
+  static void tag(String tag) {
     for (int index = 0, size = TAGGED_LOGGERS.length; index < size; index++) {
       (LOGGERS[TAGGED_LOGGERS[index]] as TaggedLogger).tag(tag);
     }
-    return MASTER;
   }
 
   /**
@@ -122,39 +123,67 @@ abstract class TaggedLogger extends PlankLogger {
   void tag(String tag);
 }
 
-class MasterPlank extends PlankLogger {
-  @override
+class MasterPlank  {
+  final Logger logger;
+
+  MasterPlank() : logger = Logger.root {
+    logger.onRecord.listen((LogRecord record) {
+
+      for (PlankLogger t in LOGGERS) {
+        if (record.level == Level.FINE) {
+          t.d(record.message, record.error, record.stackTrace);
+        }else if (record.level == Level.SEVERE) {
+          t.e(record.message, record.error, record.stackTrace);
+        }else if (record.level == Level.WARNING) {
+          t.w(record.message, record.error, record.stackTrace);
+        }else if (record.level == Level.INFO) {
+          t.i(record.message, record.error, record.stackTrace);
+        }else if (record.level == Level.CONFIG) {
+          t.v(record.message, record.error, record.stackTrace);
+        }else {
+          t.v(record.message, record.error, record.stackTrace);
+        }
+      }
+    });
+  }
+
+  //@override
   void d(String message, [Object error, StackTrace stackTrace]) {
-    for (PlankLogger t in LOGGERS) {
-      t.d(message, error, stackTrace);
-    }
+    //for (PlankLogger t in LOGGERS) {
+    //  t.d(message, error, stackTrace);
+    //}
+    logger.fine(message, error, stackTrace);
   }
 
-  @override
+  //@override
   void e(String message, [Object error, StackTrace stackTrace]) {
-    for (PlankLogger t in LOGGERS) {
-      t.e(message, error, stackTrace);
-    }
+    //for (PlankLogger t in LOGGERS) {
+    //  t.e(message, error, stackTrace);
+    //}
+    logger.severe(message, error, stackTrace);
   }
 
-  @override
+  //@override
   void i(String message, [Object error, StackTrace stackTrace]) {
-    for (PlankLogger t in LOGGERS) {
-      t.i(message, error, stackTrace);
-    }
+    //for (PlankLogger t in LOGGERS) {
+    //  t.i(message, error, stackTrace);
+    //}
+    logger.info(message, error, stackTrace);
   }
 
-  @override
+  //@override
   void v(String message, [Object error, StackTrace stackTrace]) {
-    for (PlankLogger t in LOGGERS) {
-      t.v(message, error, stackTrace);
-    }
+    //for (PlankLogger t in LOGGERS) {
+    //  t.v(message, error, stackTrace);
+    //}
+    logger.config(message, error, stackTrace);
   }
 
-  @override
+ // @override
   void w(String message, [Object error, StackTrace stackTrace]) {
-    for (PlankLogger t in LOGGERS) {
-      t.w(message, error, stackTrace);
-    }
+    //for (PlankLogger t in LOGGERS) {
+    //  t.w(message, error, stackTrace);
+    //}
+    logger.warning(message, error, stackTrace);
   }
 }

@@ -5,11 +5,17 @@ library plank.example;
 
 import 'package:plank/plank.dart';
 
-
 main() {
-  Plank.install(new DummyLogger());
   Plank.install(new SimpleLogger());
-  Plank.tag("test tag");
-  Plank.i("test");
-  Plank.e("some weird error here");
+  Plank.install(new PrettyLogger(showTag: true, colorize: false));
+
+  Plank.tag("MY_TAG");
+  Plank.i("This is an info message");
+  Plank.w("This is a warning message");
+
+  try {
+    throw new StateError("Somethin' wrong?");
+  } catch(e, s) {
+    Plank.e("This is an error message", e,  s);
+  }
 }
