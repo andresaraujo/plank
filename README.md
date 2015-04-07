@@ -1,19 +1,9 @@
 # plank
 
-A library for Dart developers. It is awesome.
-
-## Usage
-
-A simple usage example:
-
-    import 'package:plank/plank.dart';
-
-    main() {
-      var awesome = new Awesome();
-    }
+A simple and extensible logger
 
 ## Features and bugs
 
 Please file feature requests and bugs at the [issue tracker][tracker].
 
-[tracker]: http://example.com/issues/replaceme
+[tracker]: https://github.com/andresaraujo/plank/issues
