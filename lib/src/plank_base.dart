@@ -35,9 +35,13 @@ class Plank {
       }else if (record.level == Level.INFO) {
         t.i(record);
       }else if (record.level == Level.CONFIG) {
+        t.c(record);
+      }else if (record.level == Level.FINER) {
         t.v(record);
+      }else if (record.level == Level.SHOUT) {
+        t.wtf(record);
       }else {
-        t.v(record);
+        t.i(record);
       }
     }
   }
@@ -46,7 +50,7 @@ class Plank {
    * Logs a verbose message
    */
   static void v(String message, [Object error, StackTrace stackTrace]) {
-    _logger.config(message, error, stackTrace);
+    _logger.finer(message, error, stackTrace);
   }
 
   /**
@@ -64,6 +68,13 @@ class Plank {
   }
 
   /**
+   * Logs a config message
+   */
+  static void c(String message, [Object error, StackTrace stackTrace]) {
+    _logger.info(message, error, stackTrace);
+  }
+
+  /**
    * Logs a warning message
    */
   static void w(String message, [Object error, StackTrace stackTrace]) {
@@ -75,6 +86,13 @@ class Plank {
    */
   static void e(String message, [Object error, StackTrace stackTrace]) {
     _logger.severe(message, error, stackTrace);
+  }
+
+  /**
+   * Logs a terrible failure message
+   */
+  static void wtf(String message, [Object error, StackTrace stackTrace]) {
+    _logger.shout(message, error, stackTrace);
   }
 
   /**
@@ -138,9 +156,13 @@ abstract class PlankLogger {
 
   void i(LogRecord record);
 
+  void c(LogRecord record);
+
   void w(LogRecord record);
 
   void e(LogRecord record);
+
+  void wtf(LogRecord record);
 }
 
 abstract class TaggedLogger extends PlankLogger {

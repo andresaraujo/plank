@@ -31,7 +31,17 @@ class SimpleLogger extends TaggedLogger {
   }
 
   @override
+  void wtf(LogRecord record) {
+    log(record);
+  }
+
+  @override
   void i(LogRecord record) {
+    log(record);
+  }
+
+  @override
+  void c(LogRecord record) {
     log(record);
   }
 
@@ -65,7 +75,17 @@ class DummyLogger extends TaggedLogger {
   }
 
   @override
+  void wtf(LogRecord record) {
+    log(record.message, record.error, record.stackTrace);
+  }
+
+  @override
   void i(LogRecord record) {
+    log(record.message, record.error, record.stackTrace);
+  }
+
+  @override
+  void c(LogRecord record) {
     log(record.message, record.error, record.stackTrace);
   }
 
@@ -105,7 +125,7 @@ class PrettyLogger extends SimpleLogger {
   PrettyLogger({this.colorize: false, this.showTag: true, this.showTraces: true, this.tracesToShow: 2});
 
   logChunk(Level level, String chunk) {
-    if(level == Level.SEVERE) {
+    if(level == Level.SEVERE || level == Level.SHOUT) {
       pen.xterm(203);
     }else if(level == Level.WARNING){
       pen.xterm(221);
