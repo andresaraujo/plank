@@ -1,26 +1,18 @@
 library plank.loggers;
 
-import 'package:logging/logging.dart' as l;
+import 'package:logging/logging.dart' show LogRecord, Logger, Level;
 import 'package:ansicolor/ansicolor.dart';
-import 'dart:async';
 import 'package:plank/plank.dart';
 
 class SimpleLogger extends TaggedLogger {
   String _tag = "";
-  l.Logger _log;
-
-
-  SimpleLogger() {
-    _log = l.Logger.root;
-    _log.onRecord.listen(log);
-  }
 
   @override
   void tag(String tag) {
     _tag = tag;
   }
 
-  void log(l.LogRecord rec) {
+  void log(LogRecord rec) {
     print('${rec.level.name}: ${rec.time}: ${rec.message}');
     if(rec.error != null) {
       print(rec.error);
@@ -29,28 +21,28 @@ class SimpleLogger extends TaggedLogger {
   }
 
   @override
-  void d(String message, [Object error, StackTrace stackTrace]) {
-    _log.fine(message, error, stackTrace);
+  void d(LogRecord record) {
+    log(record);
   }
 
   @override
-  void e(String message, [Object error, StackTrace stackTrace]) {
-    _log.severe(message, error, stackTrace);
+  void e(LogRecord record) {
+    log(record);
   }
 
   @override
-  void i(String message, [Object error, StackTrace stackTrace]) {
-    _log.info(message, error, stackTrace);
+  void i(LogRecord record) {
+    log(record);
   }
 
   @override
-  void v(String message, [Object error, StackTrace stackTrace]) {
-    _log.config(message, error, stackTrace);
+  void v(LogRecord record) {
+    log(record);
   }
 
   @override
-  void w(String message, [Object error, StackTrace stackTrace]) {
-    _log.warning(message, error, stackTrace);
+  void w(LogRecord record) {
+    log(record);
   }
 }
 
@@ -63,35 +55,35 @@ class DummyLogger extends TaggedLogger {
   }
 
   @override
-  void d(String message, [Object error, StackTrace stackTrace]) {
-    log(message, error, stackTrace);
+  void d(LogRecord record) {
+    log(record.message, record.error, record.stackTrace);
   }
 
   @override
-  void e(String message, [Object error, StackTrace stackTrace]) {
-    log(message, error, stackTrace);
+  void e(LogRecord record) {
+    log(record.message, record.error, record.stackTrace);
   }
 
   @override
-  void i(String message, [Object error, StackTrace stackTrace]) {
-    log(message, error, stackTrace);
+  void i(LogRecord record) {
+    log(record.message, record.error, record.stackTrace);
   }
 
   @override
-  void v(String message, [Object error, StackTrace stackTrace]) {
-    log(message, error, stackTrace);
+  void v(LogRecord record) {
+    log(record.message, record.error, record.stackTrace);
   }
 
   @override
-  void w(String message, [Object error, StackTrace stackTrace]) {
-    log(message, error, stackTrace);
+  void w(LogRecord record) {
+    log(record.message, record.error, record.stackTrace);
   }
 
   log(String message, [Object error, StackTrace stackTrace]) {
     print("${_tag} : $message");
   }
 }
-enum LogLevel {ERROR, WARNING, INFO, VERBOSE, DEBUG}
+
 class PrettyLogger extends SimpleLogger {
 
   static const String TOP_LEFT_CORNER = '╔';
@@ -112,10 +104,10 @@ class PrettyLogger extends SimpleLogger {
 
   PrettyLogger({this.colorize: false, this.showTag: true, this.showTraces: true, this.tracesToShow: 2});
 
-  logChunk(l.Level level, String chunk) {
-    if(level == l.Level.SEVERE) {
+  logChunk(Level level, String chunk) {
+    if(level == Level.SEVERE) {
       pen.xterm(203);
-    }else if(level == l.Level.WARNING){
+    }else if(level == Level.WARNING){
       pen.xterm(221);
     }else{
       pen.reset();
@@ -129,15 +121,15 @@ class PrettyLogger extends SimpleLogger {
 
   }
 
-  logTopBorder(l.Level level) {
+  logTopBorder(Level level) {
     logChunk(level, TOP_BORDER);
   }
 
-  logTag(l.Level level) {
+  logTag(Level level) {
     logChunk(level, HORIZONTAL_DOUBLE_LINE + " " + _tag);
   }
 
-  logHeaderContent(l.Level level, StackTrace stackTrace) {
+  logHeaderContent(Level level, StackTrace stackTrace) {
 
     List<String> trace = [];
     if(stackTrace != null) {
@@ -158,15 +150,15 @@ class PrettyLogger extends SimpleLogger {
     }
   }
 
-  logBottomBorder(l.Level level) {
+  logBottomBorder(Level level) {
     logChunk(level, BOTTOM_BORDER);
   }
 
-  logDivider(l.Level level) {
+  logDivider(Level level) {
     logChunk(level, MIDDLE_BORDER);
   }
 
-  logContent(l.Level level, String chunk, Object error) {
+  logContent(Level level, String chunk, Object error) {
     if(error != null ) {
       String errorMessage = error.toString().trim().split("\n").first;
       chunk = "${errorMessage}\n\n$chunk";
@@ -178,7 +170,7 @@ class PrettyLogger extends SimpleLogger {
   }
 
   @override
-  log(l.LogRecord record) {
+  log(LogRecord record) {
     logTopBorder(record.level);
 
     if(showTag)
@@ -192,15 +184,4 @@ class PrettyLogger extends SimpleLogger {
     logContent(record.level, record.message, record.error);
     logBottomBorder(record.level);
   }
-}
-
-class LogRecord {
-  final String message;
-  final Object error;
-  final StackTrace stackTrace;
-  final DateTime time;
-
-  LogRecord(this.message, this.error, this.stackTrace): time = new DateTime.now();
-
-  //String toString() => '[${level.name}] $loggerName: $message';
 }
