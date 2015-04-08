@@ -2,7 +2,7 @@ name: plank
 description: >
   A simple and extensible logger
 version: 0.1.0
-author: Andres Araujo a.araujo.azua@gmail.com
+author: Andres Araujo <a.araujo.azua@gmail.com>
 homepage: https://github.com/andresaraujo/plank.git
 
 dependencies:
