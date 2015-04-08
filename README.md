@@ -2,8 +2,8 @@
 
 A simple and extensible logger
 
-You can add new loggers extending [PlankLogger] or [TaggedLogger] and installing 
-the instance using `Plank.install`.
+You can add new loggers extending `PlankLogger` or `TaggedLogger` and installing 
+them using `Plank.install`.
 
 ## Usage
 
