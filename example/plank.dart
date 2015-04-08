@@ -4,8 +4,10 @@
 library plank.example;
 
 import 'package:plank/plank.dart';
+import 'package:logging/logging.dart' show Level;
 
 main() {
+  Plank.setLevel(Level.WARNING);
   Plank.install(new SimpleLogger());
   Plank.install(new PrettyLogger(showTag: true, colorize: false));
 

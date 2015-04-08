@@ -20,6 +20,10 @@ class Plank {
   static final Logger _logger = Logger.root;
   static Stream<LogRecord> _logStream;
 
+  static void setLevel(Level level) {
+    _logger.level = level;
+  }
+
   static void onRecord(LogRecord record) {
     for (PlankLogger t in LOGGERS) {
       if (record.level == Level.FINE) {
