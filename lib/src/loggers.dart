@@ -14,7 +14,7 @@ class SimpleLogger extends TaggedLogger {
 
   void log(LogRecord rec) {
     print('${rec.level.name}: ${rec.time}: ${rec.message}');
-    if(rec.error != null) {
+    if (rec.error != null) {
       print(rec.error);
       print(rec.stackTrace);
     }
@@ -105,16 +105,20 @@ class DummyLogger extends TaggedLogger {
 }
 
 class PrettyLogger extends SimpleLogger {
-
   static const String TOP_LEFT_CORNER = '╔';
   static const String BOTTOM_LEFT_CORNER = '╚';
   static const String MIDDLE_CORNER = '╟';
   static const String HORIZONTAL_DOUBLE_LINE = '║';
-  static const String DOUBLE_DIVIDER = "════════════════════════════════════════════";
-  static const String SINGLE_DIVIDER = "────────────────────────────────────────────";
-  static const String TOP_BORDER = TOP_LEFT_CORNER + DOUBLE_DIVIDER + DOUBLE_DIVIDER;
-  static const String BOTTOM_BORDER = BOTTOM_LEFT_CORNER + DOUBLE_DIVIDER + DOUBLE_DIVIDER;
-  static const String MIDDLE_BORDER = MIDDLE_CORNER + SINGLE_DIVIDER + SINGLE_DIVIDER;
+  static const String DOUBLE_DIVIDER =
+      "════════════════════════════════════════════";
+  static const String SINGLE_DIVIDER =
+      "────────────────────────────────────────────";
+  static const String TOP_BORDER =
+      TOP_LEFT_CORNER + DOUBLE_DIVIDER + DOUBLE_DIVIDER;
+  static const String BOTTOM_BORDER =
+      BOTTOM_LEFT_CORNER + DOUBLE_DIVIDER + DOUBLE_DIVIDER;
+  static const String MIDDLE_BORDER =
+      MIDDLE_CORNER + SINGLE_DIVIDER + SINGLE_DIVIDER;
 
   AnsiPen pen = new AnsiPen()..red(bold: true);
   bool colorize;
@@ -122,23 +126,23 @@ class PrettyLogger extends SimpleLogger {
   bool showTraces;
   int tracesToShow;
 
-  PrettyLogger({this.colorize: false, this.showTag: true, this.showTraces: true, this.tracesToShow: 2});
+  PrettyLogger({this.colorize: false, this.showTag: true, this.showTraces: true,
+      this.tracesToShow: 2});
 
   logChunk(Level level, String chunk) {
-    if(level == Level.SEVERE || level == Level.SHOUT) {
+    if (level == Level.SEVERE || level == Level.SHOUT) {
       pen.xterm(203);
-    }else if(level == Level.WARNING){
+    } else if (level == Level.WARNING) {
       pen.xterm(221);
-    }else{
+    } else {
       pen.reset();
     }
 
-    if(colorize){
+    if (colorize) {
       print(pen(chunk));
-    }else {
+    } else {
       print(chunk);
     }
-
   }
 
   logTopBorder(Level level) {
@@ -150,15 +154,14 @@ class PrettyLogger extends SimpleLogger {
   }
 
   logHeaderContent(Level level, StackTrace stackTrace) {
-
     List<String> trace = [];
-    if(stackTrace != null) {
+    if (stackTrace != null) {
       trace.addAll(stackTrace.toString().trim().split("\n"));
     }
 
     String offset = "";
     for (int i = tracesToShow - 1; i >= 0; i--) {
-      if(i  > trace.length -1) continue;
+      if (i > trace.length - 1) continue;
 
       StringBuffer builder = new StringBuffer();
       builder
@@ -179,7 +182,7 @@ class PrettyLogger extends SimpleLogger {
   }
 
   logContent(Level level, String chunk, Object error) {
-    if(error != null ) {
+    if (error != null) {
       String errorMessage = error.toString().trim().split("\n").first;
       chunk = "${errorMessage}\n\n$chunk";
     }
@@ -193,10 +196,11 @@ class PrettyLogger extends SimpleLogger {
   log(LogRecord record) {
     logTopBorder(record.level);
 
-    if(showTag)
-      logTag(record.level);
+    bool _showTag = showTag && _tag.isNotEmpty;
 
-    if(showTag || record.stackTrace!= null) {
+    if (_showTag) logTag(record.level);
+
+    if (_showTag || record.stackTrace != null) {
       logHeaderContent(record.level, record.stackTrace);
       logDivider(record.level);
     }

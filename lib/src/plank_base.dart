@@ -28,19 +28,19 @@ class Plank {
     for (PlankLogger t in LOGGERS) {
       if (record.level == Level.FINE) {
         t.d(record);
-      }else if (record.level == Level.SEVERE) {
+      } else if (record.level == Level.SEVERE) {
         t.e(record);
-      }else if (record.level == Level.WARNING) {
+      } else if (record.level == Level.WARNING) {
         t.w(record);
-      }else if (record.level == Level.INFO) {
+      } else if (record.level == Level.INFO) {
         t.i(record);
-      }else if (record.level == Level.CONFIG) {
+      } else if (record.level == Level.CONFIG) {
         t.c(record);
-      }else if (record.level == Level.FINER) {
+      } else if (record.level == Level.FINER) {
         t.v(record);
-      }else if (record.level == Level.SHOUT) {
+      } else if (record.level == Level.SHOUT) {
         t.wtf(record);
-      }else {
+      } else {
         t.i(record);
       }
     }
@@ -110,7 +110,7 @@ class Plank {
    * Throws a [StateError] if [plankLogger] is null
    */
   static void install(PlankLogger plankLogger) {
-    if(_logStream == null){
+    if (_logStream == null) {
       _logStream = _logger.onRecord;
       _logStream.listen(onRecord);
     }
@@ -136,7 +136,8 @@ class Plank {
         return;
       }
     }
-    throw new ArgumentError("Cannot remove plankLogger which is not installed: ${plankLogger}");
+    throw new ArgumentError(
+        "Cannot remove plankLogger which is not installed: ${plankLogger}");
   }
 
   /**
@@ -149,7 +150,6 @@ class Plank {
 }
 
 abstract class PlankLogger {
-
   void v(LogRecord record);
 
   void d(LogRecord record);

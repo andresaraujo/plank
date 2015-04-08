@@ -29,8 +29,8 @@ main() {
 
   try {
     throw new StateError("Somethin' wrong?");
-  } catch(error, stackTrace) {
-    Plank.e("This is an error message", error,  stackTrace);
+  } catch (error, stackTrace) {
+    Plank.e("This is an error message", error, stackTrace);
   }
 
   Plank.wtf("This is a terrible failure message");
